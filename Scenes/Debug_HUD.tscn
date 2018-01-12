@@ -1,0 +1,234 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/Current_State.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Visual_Input.gd" type="Script" id=2]
+[ext_resource path="res://Sprites/Stage_Test/Square.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/Debug Sprites/Button.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Debug Sprites/Wall.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Sprite
+
+func _ready():
+	pass
+"
+
+[node name="HUD" type="CanvasLayer"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="UI Debugger" type="Label" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 24.0
+margin_top = 36.0
+margin_right = 64.0
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = ExtResource( 1 )
+
+[node name="State" type="Label" parent="UI Debugger" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -18.0
+margin_top = -31.0
+margin_right = 110.0
+margin_bottom = 9.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "BBCode" ]
+
+[node name="Frame" type="Label" parent="UI Debugger" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 178.0
+margin_top = -32.0
+margin_right = 279.0
+margin_bottom = -11.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = true
+mouse_filter = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "BBCode" ]
+
+[node name="Speed" type="Label" parent="UI Debugger" index="2"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 332.0
+margin_top = -31.0
+margin_right = 463.0
+margin_bottom = 8.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Position" type="Label" parent="UI Debugger" index="3"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 886.0
+margin_top = -32.0
+margin_right = 1071.0
+margin_bottom = 76.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Rays" type="Label" parent="UI Debugger" index="4"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 567.0
+margin_top = -29.0
+margin_right = 737.0
+margin_bottom = 4.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Wall Jump Rays"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Visual_Input" type="Node2D" parent="." index="1"]
+
+editor/display_folded = true
+position = Vector2( 1200, 70 )
+script = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="BG" type="Sprite" parent="Visual_Input" index="0"]
+
+position = Vector2( -1.29742, -8.89804 )
+rotation = 3.14159
+scale = Vector2( 0.233317, 0.199645 )
+texture = ExtResource( 3 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Button" type="Sprite" parent="Visual_Input" index="1"]
+
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
+position = Vector2( -30, 0 )
+texture = ExtResource( 4 )
+script = SubResource( 1 )
+
+[node name="B" type="Sprite" parent="Visual_Input" index="2"]
+
+modulate = Color( 0.765625, 0.107666, 0.107666, 1 )
+position = Vector2( 12.3514, 11.017 )
+scale = Vector2( 0.351505, 0.349153 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="A" type="Sprite" parent="Visual_Input" index="3"]
+
+modulate = Color( 0.214783, 0.796875, 0.319377, 1 )
+position = Vector2( 26.3821, 1.38926 )
+scale = Vector2( 0.394271, 0.394271 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Y" type="Sprite" parent="Visual_Input" index="4"]
+
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
+position = Vector2( 13.9317, -10.2569 )
+rotation = -0.585724
+scale = Vector2( 0.510413, 0.267381 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="X" type="Sprite" parent="Visual_Input" index="5"]
+
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
+position = Vector2( 39.2781, -7.83619 )
+rotation = 0.743793
+scale = Vector2( 0.510413, 0.267381 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="R" type="Sprite" parent="Visual_Input" index="6"]
+
+modulate = Color( 0.542969, 0.542969, 0.542969, 1 )
+position = Vector2( 36.1147, -38.339 )
+rotation = 0.261799
+scale = Vector2( 0.944923, 0.266861 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="L" type="Sprite" parent="Visual_Input" index="7"]
+
+modulate = Color( 0.542969, 0.542969, 0.542969, 1 )
+position = Vector2( -36.1616, -38.2783 )
+rotation = -0.261799
+scale = Vector2( 0.944923, 0.266861 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Z" type="Sprite" parent="Visual_Input" index="8"]
+
+modulate = Color( 0.502512, 0.134811, 0.605469, 1 )
+position = Vector2( 33.5134, -26.2485 )
+scale = Vector2( 0.531785, 0.182637 )
+texture = ExtResource( 4 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Stick" type="Sprite" parent="Visual_Input" index="9"]
+
+position = Vector2( -29.5477, 0.160767 )
+scale = Vector2( 0.00191812, 0.00191812 )
+texture = ExtResource( 5 )
+
+

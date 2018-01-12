@@ -1,0 +1,322 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/ProtoChar/ProtoChar_Frames.tres" type="SpriteFrames" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.1901, 24.8004 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.0141, 20.106 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.1734, 16.4621 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 21.6542 )
+
+[sub_resource type="RectangleShape2D" id=5]
+
+custom_solver_bias = 0.0
+extents = Vector2( 12.8234, 17.8466 )
+
+[sub_resource type="RectangleShape2D" id=6]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 17.7477 )
+
+[sub_resource type="RectangleShape2D" id=7]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.1762, 16.4908 )
+
+[node name="Player" type="KinematicBody2D" index="0"]
+
+position = Vector2( 680, 340 )
+scale = Vector2( 1.59543, 1.59543 )
+input_pickable = true
+collision_layer = 1
+collision_mask = 6
+collision/safe_margin = 2.0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Transform" ]
+name = "ProtoChar"
+state = "air"
+velocity = Vector2( 0, 0 )
+facing = 0
+run_speed = 400
+dash_speed = 480
+max_air_speed = 250
+fall_speed = 40
+max_fall_speed = 900
+air_accel = 21
+traction = 20
+jump_speed = 400
+second_jump_speed = 800
+next_jump = 0
+max_air_jumps = 1
+jumps = 0
+fast_fall = false
+landing_frames = 4
+lag_frames = 0
+wall_jump_counter = 0
+decay_ratio = 1.05
+perfect_wavedash_modifier = 1.05
+
+[node name="Sprite_Node" type="AnimatedSprite" parent="." index="0"]
+
+scale = Vector2( 0.133809, 0.133809 )
+frames = ExtResource( 2 )
+animation = "run"
+playing = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="stand_collision" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="air_collision" type="CollisionShape2D" parent="." index="2"]
+
+visible = false
+position = Vector2( 0, 4.74435 )
+shape = SubResource( 2 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="landing_collision" type="CollisionShape2D" parent="." index="3"]
+
+visible = false
+position = Vector2( 0, 8.30716 )
+shape = SubResource( 3 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="crouch_collision" type="CollisionShape2D" parent="." index="4"]
+
+visible = false
+position = Vector2( 0, 8.30716 )
+shape = SubResource( 3 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="jump_squat_collision" type="CollisionShape2D" parent="." index="5"]
+
+visible = false
+position = Vector2( 0, 8.30716 )
+shape = SubResource( 3 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="short_hop_collision" type="CollisionShape2D" parent="." index="6"]
+
+visible = false
+position = Vector2( 0, -5.43831 )
+shape = SubResource( 4 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="full_hop_collision" type="CollisionShape2D" parent="." index="7"]
+
+visible = false
+position = Vector2( 0, -5.43831 )
+shape = SubResource( 4 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="air_dodge_collision" type="CollisionShape2D" parent="." index="8"]
+
+visible = false
+position = Vector2( 0, 4.74435 )
+shape = SubResource( 2 )
+disabled = true
+
+[node name="air_dodge_collision3" type="CollisionShape2D" parent="." index="9"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+
+[node name="air_dodge_collision2" type="CollisionShape2D" parent="." index="10"]
+
+visible = false
+position = Vector2( 3.2301, -3.26349 )
+shape = SubResource( 5 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="free_fall_collision" type="CollisionShape2D" parent="." index="11"]
+
+visible = false
+position = Vector2( 0, 3.6539 )
+shape = SubResource( 2 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="free_fall_collision2" type="CollisionShape2D" parent="." index="12"]
+
+visible = false
+position = Vector2( 0, -2.27457 )
+shape = SubResource( 6 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="run_collision" type="CollisionShape2D" parent="." index="13"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="dash_collision" type="CollisionShape2D" parent="." index="14"]
+
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="skid_collision" type="CollisionShape2D" parent="." index="15"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="ledge_catch_collision" type="CollisionShape2D" parent="." index="16"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="ledge_hold_collision" type="CollisionShape2D" parent="." index="17"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="ledge_climb_fast_collision" type="CollisionShape2D" parent="." index="18"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="ledge_roll_fast_collision" type="CollisionShape2D" parent="." index="19"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="ledge_jump_fast_collision" type="CollisionShape2D" parent="." index="20"]
+
+visible = false
+shape = SubResource( 1 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="wall_jump_left_collision" type="CollisionShape2D" parent="." index="21"]
+
+visible = false
+position = Vector2( 0, -5.43831 )
+shape = SubResource( 4 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="wall_jump_right_collision" type="CollisionShape2D" parent="." index="22"]
+
+visible = false
+position = Vector2( 0, -5.43831 )
+shape = SubResource( 4 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="Type" type="Label" parent="." index="23"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Player"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Ground_RayL" type="RayCast2D" parent="." index="24"]
+
+position = Vector2( -10, 25 )
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 4 )
+collision_mask = 6
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ground_RayR" type="RayCast2D" parent="." index="25"]
+
+position = Vector2( 10, 24.7528 )
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 4 )
+collision_mask = 6
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall_Jump_RayB" type="RayCast2D" parent="." index="26"]
+
+visible = false
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 20, 0 )
+collision_mask = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall_Jump_RayF" type="RayCast2D" parent="." index="27"]
+
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 15, 0 )
+collision_mask = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ledge_Grab_RayF" type="RayCast2D" parent="." index="28"]
+
+modulate = Color( 0.667969, 0, 0, 1 )
+position = Vector2( 0, -25.0118 )
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 22, 0 )
+collision_mask = 8
+_sections_unfolded = [ "Transform", "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+

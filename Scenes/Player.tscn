@@ -1,0 +1,440 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Scripts/World_Setup.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/Stage_Test/Side Platform.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Stage_Test/Top Platforn.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/BG_Scroll.gd" type="Script" id=4]
+[ext_resource path="res://Sprites/Stage_Test/final_destination_bg.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Stage_Test/clouds.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/Stage_Test/final_destination_platform.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/Base_Player.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Camera.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Debug_HUD.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Audio_Manager.tscn" type="PackedScene" id=11]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.2888, 16 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10.131, 31.794 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 393.728, 17.4151 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 32, 10.6667 )
+
+[node name="World" type="WorldEnvironment"]
+
+environment = null
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Pickable", "Transform" ]
+
+[node name="Stage" type="Node" parent="." index="0"]
+
+editor/display_folded = true
+
+[node name="Floor" type="StaticBody2D" parent="Stage" index="0"]
+
+editor/display_folded = true
+position = Vector2( 660, 640 )
+scale = Vector2( 0.625, 0.624999 )
+input_pickable = true
+collision_layer = 2
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 0.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform" ]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Floor" index="0"]
+
+position = Vector2( 0, -240 )
+scale = Vector2( 55.2758, 1 )
+shape = SubResource( 1 )
+
+[node name="Type" type="Label" parent="Stage/Floor" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Floor"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Platform" type="StaticBody2D" parent="Stage" index="1"]
+
+editor/display_folded = true
+position = Vector2( 426.639, 342.69 )
+scale = Vector2( 0.207469, 0.2 )
+input_pickable = true
+collision_layer = 4
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform" ]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Platform" index="0"]
+
+modulate = Color( 0.45098, 0.0941176, 0.482353, 1 )
+position = Vector2( -2.60425, 0 )
+scale = Vector2( 55.2758, 1 )
+shape = SubResource( 2 )
+one_way_collision = true
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Type" type="Label" parent="Stage/Platform" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 54.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Platform"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Platform2" type="StaticBody2D" parent="Stage" index="2"]
+
+editor/display_folded = true
+position = Vector2( 661.616, 209.031 )
+scale = Vector2( 0.207469, 0.2 )
+input_pickable = true
+collision_layer = 4
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform" ]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Platform2" index="0"]
+
+modulate = Color( 0.454072, 0.0964966, 0.484375, 1 )
+scale = Vector2( 55.2758, 1 )
+shape = SubResource( 2 )
+one_way_collision = true
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Type" type="Label" parent="Stage/Platform2" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 54.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+size_flags_stretch_ratio = 1.01
+text = "Platform"
+align = 1
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Platform3" type="StaticBody2D" parent="Stage" index="3"]
+
+editor/display_folded = true
+modulate = Color( 0.45098, 0.0941176, 0.482353, 1 )
+position = Vector2( 896.641, 342.69 )
+scale = Vector2( 0.207469, 0.2 )
+input_pickable = true
+collision_layer = 4
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform", "Visibility" ]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Platform3" index="0"]
+
+position = Vector2( -5.91748, 0 )
+scale = Vector2( 55.2758, 1 )
+shape = SubResource( 2 )
+one_way_collision = true
+
+[node name="Type" type="Label" parent="Stage/Platform3" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 54.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Platform"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Wall" type="StaticBody2D" parent="Stage" index="4"]
+
+editor/display_folded = true
+position = Vector2( 1370, 480 )
+scale = Vector2( 0.990531, 1 )
+input_pickable = false
+collision_layer = 2
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Material", "Transform" ]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Wall" index="0"]
+
+modulate = Color( 0.164063, 0.126892, 0.126892, 1 )
+use_parent_material = true
+position = Vector2( -716.787, 80 )
+scale = Vector2( 1, 4.01951 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Type" type="Label" parent="Stage/Wall" index="1"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 28.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Wall"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Ledge_Generic" type="Area2D" parent="Stage" index="5"]
+
+editor/display_folded = true
+position = Vector2( 270, 490 )
+scale = Vector2( 0.9375, 0.9375 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 8
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Type" type="Label" parent="Stage/Ledge_Generic" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "LedgeL"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Ledge_Generic" index="1"]
+
+shape = SubResource( 4 )
+
+[node name="Ledge_Generic2" type="Area2D" parent="Stage" index="6"]
+
+editor/display_folded = true
+position = Vector2( 1050, 490 )
+scale = Vector2( 0.9375, 0.9375 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 8
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Type" type="Label" parent="Stage/Ledge_Generic2" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 45.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "LedgeR"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Stage/Ledge_Generic2" index="1"]
+
+shape = SubResource( 4 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="Center" type="Node2D" parent="Stage" index="7"]
+
+position = Vector2( 680, 380 )
+
+[node name="Side Platform" type="Sprite" parent="Stage" index="8"]
+
+position = Vector2( 273.097, 330.751 )
+scale = Vector2( 0.453748, 0.423103 )
+texture = ExtResource( 2 )
+centered = false
+_sections_unfolded = [ "Offset" ]
+
+[node name="Side Platform2" type="Sprite" parent="Stage" index="9"]
+
+position = Vector2( 764.674, 330.751 )
+scale = Vector2( 0.453748, 0.423103 )
+texture = ExtResource( 2 )
+centered = false
+flip_h = true
+_sections_unfolded = [ "Offset" ]
+
+[node name="Top Platforn" type="Sprite" parent="Stage" index="10"]
+
+position = Vector2( 522.02, 192.188 )
+scale = Vector2( 0.525284, 0.45228 )
+texture = ExtResource( 3 )
+centered = false
+_sections_unfolded = [ "Offset" ]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Stage" index="11"]
+
+editor/display_folded = true
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+scroll_offset = Vector2( 0, 0 )
+scroll_base_offset = Vector2( 0, 0 )
+scroll_base_scale = Vector2( 1, 1 )
+scroll_limit_begin = Vector2( 0, 0 )
+scroll_limit_end = Vector2( 0, 0 )
+scroll_ignore_camera_zoom = false
+script = ExtResource( 4 )
+_sections_unfolded = [ "Scroll" ]
+speed = Vector2( 10, 0 )
+
+[node name="BG1" type="ParallaxLayer" parent="Stage/ParallaxBackground" index="0"]
+
+motion_scale = Vector2( 0.3, 0.3 )
+motion_offset = Vector2( 0, 0 )
+motion_mirroring = Vector2( 1280, 715 )
+_sections_unfolded = [ "Motion" ]
+
+[node name="Sprite" type="Sprite" parent="Stage/ParallaxBackground/BG1" index="0"]
+
+scale = Vector2( 1.25245, 1.2 )
+texture = ExtResource( 5 )
+centered = false
+region_rect = Rect2( 0, 0, 1000, 600 )
+_sections_unfolded = [ "Region" ]
+
+[node name="BG2" type="ParallaxLayer" parent="Stage/ParallaxBackground" index="1"]
+
+editor/display_folded = true
+position = Vector2( 0, 740 )
+motion_scale = Vector2( 2, 2 )
+motion_offset = Vector2( 0, 0 )
+motion_mirroring = Vector2( 1280, 0 )
+_sections_unfolded = [ "Motion" ]
+
+[node name="clouds" type="Sprite" parent="Stage/ParallaxBackground/BG2" index="0"]
+
+position = Vector2( 0, -210 )
+texture = ExtResource( 6 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1280, 700 )
+region_filter_clip = true
+_sections_unfolded = [ "Animation", "Offset", "Region", "Transform" ]
+
+[node name="final_destination_platform" type="Sprite" parent="Stage" index="12"]
+
+position = Vector2( 660, 557.338 )
+scale = Vector2( 1.39373, 1.24393 )
+texture = ExtResource( 7 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Player" parent="." index="1" instance=ExtResource( 8 )]
+
+[node name="Camera2D" parent="." index="2" instance=ExtResource( 9 )]
+
+[node name="HUD" parent="." index="3" instance=ExtResource( 10 )]
+
+[node name="Audio_Manager" parent="." index="4" instance=ExtResource( 11 )]
+
+

@@ -1,0 +1,14 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/double_jump.ogg-8947fd44368363bdc8721aecabc48668.oggstr"
+
+[deps]
+
+source_md5="5111f954164ec38b5d576d18c967d4c1"
+
+[params]
+
+loop=false
+loop_offset=0

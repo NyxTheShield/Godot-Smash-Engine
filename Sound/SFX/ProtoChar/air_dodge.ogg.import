@@ -1,0 +1,14 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/air_dodge.ogg-5abe7e797d6230c80edc7f6276ec820d.oggstr"
+
+[deps]
+
+source_md5="7852d8c2deb28a63a5b6d144724b0d8a"
+
+[params]
+
+loop=false
+loop_offset=0
