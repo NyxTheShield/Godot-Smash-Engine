@@ -7,10 +7,11 @@
 [ext_resource path="res://Sprites/Stage_Test/final_destination_bg.png" type="Texture" id=5]
 [ext_resource path="res://Sprites/Stage_Test/clouds.png" type="Texture" id=6]
 [ext_resource path="res://Sprites/Stage_Test/final_destination_platform.png" type="Texture" id=7]
-[ext_resource path="res://Scenes/Base_Player.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Characters/Base_Player.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/Camera.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Debug_HUD.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Audio_Manager.tscn" type="PackedScene" id=11]
+
 
 [sub_resource type="RectangleShape2D" id=1]
 

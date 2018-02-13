@@ -86,6 +86,10 @@ p2_special=[  ]
 p2_jump=[  ]
 p2_shield=[  ]
 p2_grab=[  ]
+cstick_up=[  ]
+cstick_down=[  ]
+cstick_left=[  ]
+cstick_right=[  ]
 
 [layer_names]
 

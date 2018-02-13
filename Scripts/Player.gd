@@ -56,7 +56,7 @@ const DASH= 'dash'
 const RUN= 'run'
 const CROUCH= 'crouch'
 const LANDING= 'landing'
-const jump_SQUAT= 'jump_squat'
+const JUMP_SQUAT= 'jump_squat'
 const SHORT_HOP= 'short_hop'
 const FULL_HOP= 'full_hop'
 const SKID= 'skid'
@@ -69,10 +69,16 @@ const LEDGE_CATCH= 'ledge_catch'
 const LEDGE_HOLD = 'ledge_hold'
 const LEDGE_ROLL_FAST = 'ledge_roll_fast'
 const LEDGE_CLIMB_FAST = 'ledge_climb_fast'
-const LEDGE_jump_FAST = 'ledge_jump_fast'
+const LEDGE_JUMP_FAST = 'ledge_jump_fast'
 const LEDGE_ROLL_SLOW = 'ledge_climb_slow'
 const LEDGE_CLIMB_SLOW = 'ledge_climb_slow'
-const LEDGE_jump_SLOW = 'ledge_jump_slow'
+const LEDGE_JUMP_SLOW = 'ledge_jump_slow'
+const NAIR = 'nair'
+const FAIR = 'fair'
+const UAIR = 'uair'
+const BAIR =  'bair'
+const DAIR =  'dair'
+const TUMBLE =  'tumble'
 
 #Controls
 var up = ''
@@ -85,6 +91,10 @@ var shield  = ''
 var grab  = ''
 var jump  = ''
 var device  = ''
+var cstick_up =  '' 
+var cstick_down = ''
+var cstick_left = '' 
+var cstick_right = ''
 
 #On Ready Nodes
 onready var sprite = get_node("Sprite_Node")
@@ -97,32 +107,37 @@ onready var audio = get_node('/root/Audio_Manager')
 onready var last_ledge = false
 
 #Global Vars
-export var name = 'ProtoChar'
-export var state = AIR
-export var velocity = Vector2(0,0)
-export var facing  = 0
-export var run_speed = 400
-export var dash_speed = 480
-export var max_air_speed = 250
-export var fall_speed = 40
-export var max_fall_speed = 900
-export var air_accel = 21
-export var traction = 20
-export var jump_speed = 400
-export var second_jump_speed = 800
-export var next_jump = 0
-export var max_air_jumps = 1
-export var jumps = 0
-export var fast_fall = false
-export var landing_frames = 4
-#Number of lag frames that will be added on landing
-export var lag_frames = 0
-#Number of Walljumps
-export var wall_jump_counter = 0
-#Wall Jump Decay Ratio
-export var decay_ratio = 1.05 
+var char_name = 'Test'
+var state = AIR
+var velocity = Vector2(0,0)
+var run_speed = 400
+var dash_speed = 480
+var max_air_speed = 250
+var fall_speed = 40
+var max_fall_speed = 900
+var air_accel = 21
+var traction = 20
+var jump_speed = 430
+var short_hop_speed
+var second_jump_speed = 800
+var next_jump = 0
+var max_air_jumps = 1
+var jumps = 0
+var fast_fall = false
+var landing_frames = 4
 #Modifier so Perfect Wavedash isnt obscene
-export var perfect_wavedash_modifier = 1.11
+var perfect_wavedash_modifier = 1.11
+var dash_duration = 16
+var jump_squat_duration = 5
+var air_dodge_speed = 730
+
+#General Data
+#Number of lag frames that will be added on landing
+var lag_frames = 0
+#Number of Walljumps
+var wall_jump_counter = 0
+#Wall Jump Decay Ratio
+var decay_ratio = 1.05 
 
 #Enviroment Vars
 var damage = 0
@@ -132,18 +147,6 @@ var last_platform = false
 var buffer_dodge = false
 var regrab = 0
 var down_buffer = 0
-
-#Move Data
-#Char Specific stuff
-var dash_duration = 16
-var jump_squat_duration = 5
-var air_dodge_speed = 730
-
-#sfx
-var land_sfx = 0
-var dash_sfx = 0
-var double_jump_sfx = 0
-var jump_sfx = 0
 
 #controls
 var keyboard = false
@@ -177,12 +180,36 @@ func set_controls(array):
 	device = array[9]
 	keyboard = array[10]
 	joypad = array[11]
+	cstick_up =  array[12] 
+	cstick_down = array[13]
+	cstick_left = array[14] 
+	cstick_right = array[15]
 	
 
 func audio_path(string):
-	return '/SFX/'+name+'/'+string
+	return '/SFX/'+char_name+'/'+string
 	
+	
+#Set the current active animation
+func update_animation(state):
+	if sprite.get_animation() != state:
+		sprite.set_animation(state)
+	pass
 
+func create_hitbox(width, height, damage,angle,base_kb, kb_scaling,duration,type,id,points,hitlag=1):
+	var test_hitbox = load('res://Scenes/Hitboxes/Base_Hitbox.tscn')
+	var hitbox_instance = test_hitbox.instance()
+	self.add_child(hitbox_instance)
+	#Rotates The Points 
+	if direction() == 1:
+		hitbox_instance.set_parameters(width, height, damage,angle,base_kb, kb_scaling,duration,type,id,points,hitlag)
+	else:
+		var flip_x_points = []
+		for point in points:
+			flip_x_points.append( Vector2(-point.x, point.y) ) 
+		hitbox_instance.set_parameters(width, height, damage,angle,base_kb, kb_scaling,duration,type,id,flip_x_points,hitlag)
+	return hitbox_instance
+	
 #====================================================
 #====================================================
 #Gameplay Functions
@@ -191,12 +218,7 @@ func audio_path(string):
 func _____________________________________________________________________():
 	#another dumb separator
 	pass
-	
-#Set the current active animation
-func update_animation(state):
-	if sprite.get_animation() != state:
-		sprite.set_animation(state)
-	pass
+
 
 #Refresh the character's jumps	
 func refresh_jumps():
@@ -217,7 +239,7 @@ func reset_ledge():
 func turn(direction):
 	var dir = 0
 	if direction:
-		dir = -1
+		dir = -1	
 	else:
 		dir = 1
 	sprite.set_flip_h(direction)
@@ -228,6 +250,7 @@ func turn(direction):
 
 #Code to drop through platforms
 func drop_platform():
+	
 	if state_includes([RUN,CROUCH,DASH]) and down_buffer<10:
 		if Input.is_action_pressed(down) and timer > 4 and (rayL.is_colliding() or rayR.is_colliding()):
 				if rayL.is_colliding():
@@ -314,8 +337,7 @@ func update_rays_positions():
 	
 #Calls every state function to check which one is the current one (basically, a wrapper to clean the main loop)
 func state_handler():
-	#This is coded like this because in the future, we will need a case-switch kind 
-	#of logic restriction to limit the number of state-changes per frame
+	#Calls every state handler
 	air_state()
 	air_dodge_state()
 	free_fall_state()
@@ -334,6 +356,66 @@ func state_handler():
 	ledge_climb_fast_state()
 	ledge_roll_fast_state()
 	ledge_jump_fast_state()
+	#Aerial Handler
+	aerial_handler()
+
+	pass
+
+#Input Handler for aerials
+func aerial_handler():
+	if state_includes([AIR,TUMBLE]) or (state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]) and timer >=5):
+		#Hack, Fixes walljump acceleration
+		var walljump_adjustment = Vector2(velocity.x/1.4,velocity.y-100)
+		if (Input.is_action_pressed(left) and Input.is_action_just_pressed(attack)) or Input.is_action_just_pressed(cstick_left):
+			if state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]):
+				velocity.x = walljump_adjustment.x
+				velocity.y = walljump_adjustment.y
+			if direction() == 1:
+				state = BAIR
+			else:
+				state = FAIR
+			timer = 0
+			
+		elif (Input.is_action_pressed(right) and Input.is_action_just_pressed(attack)) or Input.is_action_just_pressed(cstick_right):
+			if state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]):
+				velocity.x = walljump_adjustment.x
+				velocity.y = walljump_adjustment.y		
+			if direction() == 1:
+				state = FAIR
+			else:
+				state = BAIR
+			timer = 0
+		elif (Input.is_action_pressed(down) and Input.is_action_just_pressed(attack)) or Input.is_action_just_pressed(cstick_down):
+			if state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]):
+				velocity.x = walljump_adjustment.x
+				velocity.y = walljump_adjustment.y
+			state = DAIR
+			timer = 0
+		elif (Input.is_action_pressed(up) and Input.is_action_just_pressed(attack)) or Input.is_action_just_pressed(cstick_up):
+			if state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]):
+				velocity.x = walljump_adjustment.x
+				velocity.y = walljump_adjustment.y
+			state = UAIR
+			timer = 0
+		elif Input.is_action_just_pressed(attack):
+			if state_includes([WALLJUMPLEFT,WALLJUMPRIGHT]):
+				velocity.x = walljump_adjustment.x
+				velocity.y = walljump_adjustment.y
+			state = NAIR
+			timer = 0
+	
+	if state == BAIR:
+		bair()
+	if state == NAIR:
+		nair()
+	if state == FAIR:
+		fair()
+	if state == DAIR:
+		dair()
+	if state == UAIR:
+		uair()
+	if state_includes([NAIR,BAIR,FAIR,UAIR,DAIR]):
+		aerial_acceleration()
 	pass
 
 #Handles all the collision checking
@@ -355,9 +437,26 @@ func collision_handler():
 	var velocity_x = Vector2(velocity.x,0)
 	var velocity_y = Vector2(0,velocity.y)
 	
-	var collision_x = move_and_collide(velocity_x/50)
-	var collision_y = move_and_collide(velocity_y/50)
-
+	#Test Slopes
+	var angle = 0
+	if (rayL.is_colliding() or rayR.is_colliding()):
+		if rayL.is_colliding() and rayR.is_colliding():
+			angle = max(rayL.get_collider().rotation_degrees, rayR.get_collider().rotation_degrees)	
+		elif rayL.is_colliding():
+			angle = rayL.get_collider().rotation_degrees
+		elif rayR.is_colliding() :
+			angle = rayR.get_collider().rotation_degrees
+	else:
+		angle = 0
+	
+	var slope_factor = Vector2(cos(deg2rad(angle))*velocity.x - sin(deg2rad(angle))*velocity.y, sin(deg2rad(angle))*velocity.x + cos(deg2rad(angle))*velocity.y ) 
+	move_and_slide(slope_factor,Vector2(0,1),50)
+	
+	
+	
+	var collision_y = null
+	if  get_slide_count() > 0:
+		collision_y = get_slide_collision(0)
 
 	#====================================================
 	#====================================================
@@ -365,7 +464,7 @@ func collision_handler():
 	#====================================================
 	#====================================================
 	if collision_y != null and (rayL.is_colliding() or rayR.is_colliding()):
-		if state_includes([AIR,AIR_DODGE,FREE_FALL,WALLJUMPLEFT,WALLJUMPRIGHT]):
+		if state_includes([AIR,AIR_DODGE,FREE_FALL,WALLJUMPLEFT,WALLJUMPRIGHT,NAIR,FAIR,UAIR,DAIR,BAIR,TUMBLE]):
 			if collision_y.collider.get_node('Type').text == FLOOR:
 				state = LANDING
 				timer = 0
@@ -398,7 +497,7 @@ func collision_handler():
 	#====================================================
 
 	elif not rayL.is_colliding() and not rayR.is_colliding():
-		if not state_exception([RUN,STAND,CROUCH,DASH,LANDING,SKID]):
+		if state_includes([RUN,STAND,CROUCH,DASH,LANDING,SKID,JUMP_SQUAT]):
 			#print(rayL.get_collider())
 			#print('FALLING')
 			state = AIR
@@ -417,12 +516,12 @@ func collision_handler():
 		var collider = ray_wallF.get_collider ( )
 		if collider.get_node('Type').text == WALL:
 			#print('MURO')
-			if Input.is_action_just_pressed(left) and state_includes([AIR,WALLJUMPRIGHT ]) and ray_wallF.get_cast_to().x>0:
+			if (Input.is_action_just_pressed(left) and state_includes([AIR]) and ray_wallF.get_cast_to().x>0) or (state == WALLJUMPRIGHT and timer >5 and ray_wallF.get_cast_to().x>0):
 				state = WALLJUMPLEFT
 				timer = 0
 				velocity.x=0
 				velocity.y=0
-			elif Input.is_action_just_pressed(right) and state_includes([AIR,WALLJUMPLEFT]) and ray_wallF.get_cast_to().x<0:
+			elif Input.is_action_just_pressed(right) and state_includes([AIR]) and ray_wallF.get_cast_to().x<0 or (state == WALLJUMPLEFT and timer >5 and ray_wallF.get_cast_to().x<0):
 				state = WALLJUMPRIGHT 
 				timer = 0
 				velocity.x=0
@@ -479,23 +578,7 @@ func collision_handler():
 			collider.is_grabbed = true
 			last_ledge = collider
 			
-
-
-#====================================================
-#====================================================
-#Physics Behaviour
-#====================================================
-#====================================================
-func _________________________________________________________________():
-	#I am using this as a separator XD
-	pass
-	
-func air_state():
-	if state == AIR:
-		if Input.is_action_just_pressed(shield):
-			state = AIR_DODGE
-			timer = 0
-			
+func aerial_acceleration():
 		if velocity.y <  max_fall_speed:
 			velocity.y +=fall_speed
 		
@@ -506,21 +589,6 @@ func air_state():
 			
 		if fast_fall == true:
 			velocity.y = max_fall_speed
-			
-		if Input.is_action_just_pressed(jump) and jumps < max_air_jumps:
-			audio.playsfx(audio_path('double_jump'),0.74)
-			fast_fall = false
-			velocity.y = -second_jump_speed
-			if Input.is_action_pressed(left):
-				velocity.x = -max_air_speed
-			elif Input.is_action_pressed(right):
-				velocity.x = max_air_speed
-			else:
-				velocity.x = 0
-				
-			
-			timer = 0
-			jumps += 1
 		
 		if  abs(velocity.x) >=  abs(max_air_speed):
 			if velocity.x > 0:
@@ -548,6 +616,36 @@ func air_state():
 			elif velocity.x > 0:
 				velocity.x += -air_accel / 10
 				
+
+#====================================================
+#====================================================
+#Physics Behaviour
+#====================================================
+#====================================================
+func _________________________________________________________________():
+	#I am using this as a separator XD
+	pass
+	
+func air_state():
+	if state == AIR:
+		if Input.is_action_just_pressed(shield):
+			state = AIR_DODGE
+			timer = 0
+			
+		if Input.is_action_just_pressed(jump) and jumps < max_air_jumps:
+			audio.playsfx(audio_path('double_jump'),0.74)
+			fast_fall = false
+			velocity.y = -second_jump_speed
+			if Input.is_action_pressed(left):
+				velocity.x = -max_air_speed
+			elif Input.is_action_pressed(right):
+				velocity.x = max_air_speed
+			else:
+				velocity.x = 0
+			timer = 0
+			jumps += 1
+		
+		aerial_acceleration()
 			
 	pass
 	
@@ -569,7 +667,6 @@ func air_dodge_state():
 			else:
 				var deadzone = (Input.get_joy_axis(device, 0) in range(-0.2,0.2) ) and (Input.get_joy_axis(device, 1) in range(-0.2,0.2) )
 				var direction = Vector2(Input.get_joy_axis(device, 0), Input.get_joy_axis(device, 1))
-				print(direction)
 				if deadzone:
 					direction = Vector2(0,0)
 			
@@ -578,12 +675,13 @@ func air_dodge_state():
 			if abs(velocity.x)==abs(velocity.y):
 				velocity.x = velocity.x/1.25
 				velocity.y = velocity.y/1.25
+			lag_frames = 3
 			
 		if timer >= 4 and timer <= 10:
 			if timer == 5:
 				audio.playsfx(audio_path('air_dodge'),0.74)
-			velocity.x = velocity.x/1.1
-			velocity.y = velocity.y/1.1
+			velocity.x = velocity.x/1.15
+			velocity.y = velocity.y/1.15
 		if timer >=10 and timer < 20:		
 			velocity.x = 0
 			velocity.y = 0
@@ -633,7 +731,7 @@ func crouch_state():
 	if state == CROUCH:
 		if Input.is_action_just_pressed(jump):
 			timer = 0
-			state = jump_SQUAT 
+			state = JUMP_SQUAT 
 					
 		if Input.is_action_just_released(down):
 			state = STAND
@@ -647,7 +745,7 @@ func crouch_state():
 			if abs(velocity.x)>run_speed:		
 				velocity.x =  velocity.x + traction*3
 			else:	
-				velocity.x =  velocity.x + traction
+				velocity.x =  velocity.x + traction*2
 	pass
 	
 func stand_state():
@@ -658,7 +756,7 @@ func stand_state():
 			timer = 0
 		if Input.is_action_just_pressed(jump):
 			timer = 0
-			state = jump_SQUAT
+			state = JUMP_SQUAT
 			
 			
 		if Input.is_action_pressed(left):
@@ -685,7 +783,7 @@ func stand_state():
 
 func short_hop_state():
 	if state == SHORT_HOP:
-		velocity.y = -jump_speed*1.5
+		velocity.y = -short_hop_speed
 		state = AIR
 		timer = 0
 		audio.playsfx(audio_path(jump),0.6)
@@ -697,7 +795,7 @@ func short_hop_state():
 func full_hop_state():
 				
 	if state == FULL_HOP:
-		velocity.y = -jump_speed*2
+		velocity.y = -jump_speed
 		state = AIR
 		timer = 0
 		audio.playsfx(audio_path(jump),0.6)
@@ -707,13 +805,11 @@ func full_hop_state():
 	pass
 
 func jump_squat_state():
-	if state ==jump_SQUAT:
+	if state ==JUMP_SQUAT:
 		if timer < jump_squat_duration - 1:
 			if not buffer_dodge:
 				buffer_dodge = Input.is_action_just_pressed(shield)
 		if timer == jump_squat_duration - 1:
-			#play_sfx(jump_sfx)
-			
 			if (Input.is_action_just_pressed(shield) or buffer_dodge) and (Input.is_action_pressed(left) or Input.is_action_pressed(right)):
 				if Input.is_action_pressed(left):
 					velocity.x = -air_dodge_speed/perfect_wavedash_modifier
@@ -721,16 +817,12 @@ func jump_squat_state():
 					velocity.x = air_dodge_speed/perfect_wavedash_modifier
 				state = LANDING
 				lag_frames = 6
-				timer = 0
-				
-				
+				timer = 0					
 			elif not Input.is_action_pressed(jump):
 				state = SHORT_HOP
 				
 			else:
 				state = FULL_HOP
-
-			
 			buffer_dodge = false
 	pass
 
@@ -738,7 +830,7 @@ func run_state():
 	if state == RUN:
 		if Input.is_action_just_pressed(jump):
 			timer = 0
-			state = jump_SQUAT 
+			state = JUMP_SQUAT 
 		
 		if Input.is_action_just_pressed(down):
 			state = CROUCH
@@ -769,46 +861,10 @@ func run_state():
 	drop_platform()	
 
 func dash_state():
-	#Attempt to fix weird relanding behaviour
-#	if state == DASH:
-#		if Input.is_action_just_pressed(jump):
-#				state = jump_SQUAT 
-#				timer = 0
-#
-#		elif Input.is_action_just_pressed(left):
-#			if velocity.x > 0:
-#				audio.playsfx(audio_path('dash'),1.1)
-#				timer = 0
-#				velocity.x = -dash_speed
-#				turn(true)
-#
-#		elif Input.is_action_just_pressed(right):
-#			if velocity.x < 0:
-#				audio.playsfx(audio_path('dash'),1.1)
-#				timer = 0
-#				velocity.x = dash_speed
-#				turn(false)
-#
-#		elif Input.is_action_pressed(left) and not Input.is_action_just_pressed(left):
-#				if timer == dash_duration:
-#					state = RUN
-#					timer = 0
-#				turn(true)
-#
-#		elif Input.is_action_pressed(right) and not Input.is_action_just_pressed(right):
-#				if timer == dash_duration:
-#					state = RUN
-#					timer = 0
-#				turn(false)
-#
-#		if timer == dash_duration:
-#			velocity.x -= velocity.x
-#			state=STAND
-
-					
+	
 	if state == DASH:
 		if Input.is_action_just_pressed(jump):
-			state = jump_SQUAT 
+			state = JUMP_SQUAT 
 			timer = 0
 
 		elif Input.is_action_pressed(left):
@@ -843,7 +899,7 @@ func dash_state():
 			elif velocity.x < 0:
 				velocity.x =  velocity.x + traction
 			elif velocity.x == 0:
-				if state != jump_SQUAT:
+				if state != JUMP_SQUAT:
 					state = STAND
 	
 	pass
@@ -852,7 +908,7 @@ func skid_state():
 	if state == SKID:
 		if Input.is_action_just_pressed(jump):
 			timer = 0
-			state = jump_SQUAT 
+			state = JUMP_SQUAT 
 		
 		if velocity.x > 0:
 			turn(true)
@@ -887,27 +943,30 @@ func landing_state():
 			lag_frames = 0
 
 func wall_jump_state():
-	if state ==WALLJUMPLEFT:
+	if state ==WALLJUMPLEFT or state == WALLJUMPRIGHT:
 		if timer == 1:
 			velocity.x = 0
 			velocity.y = 0
 		if timer == 5:
-			turn(true)
-			
+			if state == WALLJUMPLEFT:
+				turn(true)
+			else:
+				turn(false)
 			wall_jump_counter +=1
-			#print(wall_jump_counter)
 			var wall_jump_decay = pow(decay_ratio,wall_jump_counter)
-			velocity.x = -jump_speed*2
-			velocity.y = -jump_speed/(wall_jump_decay)
+			velocity.x = direction()*jump_speed/1.2
+			velocity.y = -(0.6)*jump_speed/(wall_jump_decay)
 			
 		elif timer >=6 and timer < 12:
 			velocity.x=velocity.x/1.2
 		elif timer>12 and timer <44:
 			if velocity.y <  max_fall_speed:
 				velocity.y +=fall_speed
+				
 		elif timer >= 44:
 			state =AIR
 			timer=0	
+			
 		if timer>5:
 			if Input.is_action_just_pressed(shield):
 				state=AIR_DODGE
@@ -915,8 +974,6 @@ func wall_jump_state():
 			elif Input.is_action_just_pressed(jump) and jumps < max_air_jumps:
 				fast_fall = false
 				velocity.y = -second_jump_speed
-				
-				##play_sfx(double_jump_sfx)
 				if Input.is_action_just_pressed(left):
 					velocity.x = -max_air_speed
 				elif Input.is_action_just_pressed(right):
@@ -927,51 +984,13 @@ func wall_jump_state():
 				jumps += 1
 				state=AIR
 
-	
-	if state ==WALLJUMPRIGHT:
-		if timer == 1:
-			velocity.x = 0
-			velocity.y = 0
-			
-		if timer == 5:
-			wall_jump_counter +=1
-			#print(wall_jump_counter)
-			turn(false)
-			var wall_jump_decay = pow(decay_ratio,wall_jump_counter)
-			velocity.x = jump_speed*2
-			velocity.y = -jump_speed/(wall_jump_decay)
-		elif timer >=6 and timer < 12:
-			velocity.x=velocity.x/1.2
-		elif timer>12 and timer <44:
-			if velocity.y <  max_fall_speed:
-				velocity.y +=fall_speed
-		elif timer >= 44:
-			state =AIR
-			timer=0	
-		if timer>5:
-			if Input.is_action_just_pressed(shield):
-				state=AIR_DODGE
-				timer = 0
-			elif Input.is_action_just_pressed(jump) and jumps < max_air_jumps:
-				fast_fall = false
-				velocity.y = -second_jump_speed
-				
-				##play_sfx(double_jump_sfx)
-				if Input.is_action_just_pressed(left):
-					velocity.x = -max_air_speed
-				elif Input.is_action_just_pressed(right):
-					velocity.x = max_air_speed
-				else:
-					velocity.x = 0
-				timer = 0
-				jumps += 1
-				state=AIR
 
 func ledge_catch_state():
 	if state==LEDGE_CATCH:
 		if timer > 7:
 			state = LEDGE_HOLD
 			timer = 0
+			lag_frames = 0
 	pass
 
 func ledge_hold_state():
@@ -1011,9 +1030,9 @@ func ledge_hold_state():
 			elif Input.is_action_just_pressed(jump):
 				timer = 0
 				if damage <100:
-					state = LEDGE_jump_FAST
+					state = LEDGE_JUMP_FAST
 				else:
-					state = LEDGE_jump_SLOW
+					state = LEDGE_JUMP_SLOW
 				
 					
 		#Facing Left
@@ -1042,9 +1061,9 @@ func ledge_hold_state():
 			elif Input.is_action_just_pressed(jump):
 				timer = 0
 				if damage <100:
-					state = LEDGE_jump_FAST
+					state = LEDGE_JUMP_FAST
 				else:
-					state = LEDGE_jump_SLOW
+					state = LEDGE_JUMP_SLOW
 	pass
 
 func ledge_climb_fast_state():
@@ -1095,7 +1114,7 @@ func ledge_roll_fast_state():
 			reset_ledge()
 
 func ledge_jump_fast_state():
-	if state==LEDGE_jump_FAST:	
+	if state==LEDGE_JUMP_FAST:	
 		if timer == 10:
 			reset_ledge()
 			position.y -=20
@@ -1104,7 +1123,7 @@ func ledge_jump_fast_state():
 		
 		if timer == 20:
 			position.y -=20	
-			velocity.y -=jump_speed*2.5
+			velocity.y -=jump_speed*1.25
 			velocity.x +=220*direction()
 		elif timer > 20 and timer <40:
 			velocity.y+=fall_speed
@@ -1122,7 +1141,7 @@ func ___________________________________________________________________():
 	#Dumbness
 	pass
 	
-#Base Functions. Override and Implement them on the player itself.
+#Base Functions. Override and Implement them on the player script.
 func nair():
 	pass
 
@@ -1173,7 +1192,6 @@ func __________________________________________________________________():
 #====================================================
 #====================================================
 func _physics_process(delta):
-	
 	state_handler()
 	collision_handler()
 	#Updates the ledge regrab timer
@@ -1189,4 +1207,5 @@ func _physics_process(delta):
 	#debug
 	if Input.is_action_just_pressed('ui_select'):
 		position =  Vector2(640,360)
+	#print(lag_frames)
 	pass

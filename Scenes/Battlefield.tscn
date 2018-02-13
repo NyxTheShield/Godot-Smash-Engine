@@ -32,7 +32,6 @@ extents = Vector2( 32, 10.6667 )
 
 [node name="Floor" type="StaticBody2D" parent="." index="0"]
 
-editor/display_folded = true
 position = Vector2( 660, 640 )
 scale = Vector2( 0.625, 0.624999 )
 input_pickable = true
@@ -64,6 +63,7 @@ margin_right = 40.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Floor"
@@ -71,7 +71,46 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Platform" type="StaticBody2D" parent="." index="1"]
+[node name="Floor2" type="StaticBody2D" parent="." index="1"]
+
+editor/display_folded = true
+position = Vector2( 1733.81, 575.776 )
+rotation = -0.334699
+scale = Vector2( 0.625, 0.624999 )
+input_pickable = true
+collision_layer = 2
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 0.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2" index="0"]
+
+position = Vector2( 0, -240 )
+scale = Vector2( 55.2758, 1 )
+shape = SubResource( 1 )
+
+[node name="Type" type="Label" parent="Floor2" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Floor"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Platform" type="StaticBody2D" parent="." index="2"]
 
 editor/display_folded = true
 position = Vector2( 426.639, 342.69 )
@@ -108,6 +147,7 @@ margin_right = 54.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Platform"
@@ -115,7 +155,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Platform2" type="StaticBody2D" parent="." index="2"]
+[node name="Platform2" type="StaticBody2D" parent="." index="3"]
 
 editor/display_folded = true
 position = Vector2( 661.616, 209.031 )
@@ -128,10 +168,6 @@ constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 _sections_unfolded = [ "Collision", "Transform" ]
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform2" index="0"]
 
@@ -151,6 +187,7 @@ margin_right = 54.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 size_flags_stretch_ratio = 1.01
@@ -161,7 +198,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Platform3" type="StaticBody2D" parent="." index="3"]
+[node name="Platform3" type="StaticBody2D" parent="." index="4"]
 
 editor/display_folded = true
 modulate = Color( 0.45098, 0.0941176, 0.482353, 1 )
@@ -197,6 +234,7 @@ margin_right = 54.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Platform"
@@ -204,7 +242,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Wall" type="StaticBody2D" parent="." index="4"]
+[node name="Wall" type="StaticBody2D" parent="." index="5"]
 
 editor/display_folded = true
 position = Vector2( 1370, 480 )
@@ -242,6 +280,7 @@ margin_right = 28.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "Wall"
@@ -249,7 +288,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Ledge_Generic" type="Area2D" parent="." index="5"]
+[node name="Ledge_Generic" type="Area2D" parent="." index="6"]
 
 editor/display_folded = true
 position = Vector2( 270, 490 )
@@ -279,6 +318,7 @@ margin_right = 45.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "LedgeL"
@@ -290,7 +330,7 @@ max_lines_visible = -1
 
 shape = SubResource( 4 )
 
-[node name="Ledge_Generic2" type="Area2D" parent="." index="6"]
+[node name="Ledge_Generic2" type="Area2D" parent="." index="7"]
 
 editor/display_folded = true
 position = Vector2( 1050, 490 )
@@ -320,6 +360,7 @@ margin_right = 45.0
 margin_bottom = 14.0
 rect_pivot_offset = Vector2( 0, 0 )
 mouse_filter = 2
+mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 text = "LedgeR"
@@ -332,11 +373,11 @@ max_lines_visible = -1
 shape = SubResource( 4 )
 _sections_unfolded = [ "Visibility" ]
 
-[node name="Center" type="Node2D" parent="." index="7"]
+[node name="Center" type="Node2D" parent="." index="8"]
 
 position = Vector2( 680, 380 )
 
-[node name="Side Platform" type="Sprite" parent="." index="8"]
+[node name="Side Platform" type="Sprite" parent="." index="9"]
 
 position = Vector2( 273.097, 330.751 )
 scale = Vector2( 0.453748, 0.423103 )
@@ -344,7 +385,7 @@ texture = ExtResource( 2 )
 centered = false
 _sections_unfolded = [ "Offset" ]
 
-[node name="Side Platform2" type="Sprite" parent="." index="9"]
+[node name="Side Platform2" type="Sprite" parent="." index="10"]
 
 position = Vector2( 764.674, 330.751 )
 scale = Vector2( 0.453748, 0.423103 )
@@ -353,7 +394,7 @@ centered = false
 flip_h = true
 _sections_unfolded = [ "Offset" ]
 
-[node name="Top Platforn" type="Sprite" parent="." index="10"]
+[node name="Top Platforn" type="Sprite" parent="." index="11"]
 
 position = Vector2( 522.02, 192.188 )
 scale = Vector2( 0.525284, 0.45228 )
@@ -361,12 +402,13 @@ texture = ExtResource( 3 )
 centered = false
 _sections_unfolded = [ "Offset" ]
 
-[node name="Background" type="ParallaxBackground" parent="." index="11"]
+[node name="Background" type="ParallaxBackground" parent="." index="12"]
 
 layer = -1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 scroll_offset = Vector2( 0, 0 )
 scroll_base_offset = Vector2( 0, 0 )
 scroll_base_scale = Vector2( 1, 1 )
@@ -411,7 +453,7 @@ region_rect = Rect2( 0, 0, 1280, 700 )
 region_filter_clip = true
 _sections_unfolded = [ "Animation", "Offset", "Region", "Transform" ]
 
-[node name="final_destination_platform" type="Sprite" parent="." index="12"]
+[node name="final_destination_platform" type="Sprite" parent="." index="13"]
 
 position = Vector2( 660, 557.338 )
 scale = Vector2( 1.39373, 1.24393 )

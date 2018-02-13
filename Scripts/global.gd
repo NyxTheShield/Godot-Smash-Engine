@@ -1,5 +1,40 @@
 extends Node
 
+#Defining Constants
+#Stage
+const WALL = 'Wall'
+const FLOOR = 'Floor'
+const PLATFORM = 'Platform'
+
+#States
+const STAND = 'stand'
+const DASH= 'dash'
+const RUN= 'run'
+const CROUCH= 'crouch'
+const LANDING= 'landing'
+const JUMP_SQUAT= 'jump_squat'
+const SHORT_HOP= 'short_hop'
+const FULL_HOP= 'full_hop'
+const SKID= 'skid'
+const AIR= 'air'
+const AIR_DODGE= 'air_dodge'
+const FREE_FALL= 'free_fall'
+const WALLJUMPLEFT= 'wall_jump_left'
+const WALLJUMPRIGHT= 'wall_jump_right'
+const LEDGE_CATCH= 'ledge_catch'
+const LEDGE_HOLD = 'ledge_hold'
+const LEDGE_ROLL_FAST = 'ledge_roll_fast'
+const LEDGE_CLIMB_FAST = 'ledge_climb_fast'
+const LEDGE_JUMP_FAST = 'ledge_jump_fast'
+const LEDGE_ROLL_SLOW = 'ledge_climb_slow'
+const LEDGE_CLIMB_SLOW = 'ledge_climb_slow'
+const LEDGE_JUMP_SLOW = 'ledge_jump_slow'
+const NAIR = 'nair'
+const FAIR = 'fair'
+const UAIR = 'uair'
+const BAIR =  'bair'
+const DAIR =  'dair'
+const TUMBLE =  'tumble'
 var current_scene = null
 var p1_device = null
 #Device,AxisX,AxisY,Keyboard

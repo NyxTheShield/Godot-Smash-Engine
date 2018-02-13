@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Base_Hitbox.gd" type="Script" id=1]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 73.0447, 36.3267 )
+
+[sub_resource type="Curve2D" id=2]
+
+bake_interval = 5.0
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -49.7511, -73.7376, 0, 0, 0, 0, 25.5108, -27.5241, 0, 0, 0, 0, 63.3619, 18.6893, 0, 0, 0, 0, 114.417, 91.3104 )
+}
+
+[node name="Base_Hitbox" type="Area2D"]
+
+position = Vector2( 201.41, 86.3188 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="hitbox_collision" type="CollisionShape2D" parent="." index="0"]
+
+modulate = Color( 0.288881, 0.570313, 0.0556946, 1 )
+show_behind_parent = true
+shape = SubResource( 1 )
+_sections_unfolded = [ "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="path" type="Path2D" parent="." index="1"]
+
+curve = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="point_hint" type="Position2D" parent="." index="2"]
+
+position = Vector2( -3.23538, 1.94123 )
+_sections_unfolded = [ "Transform" ]
+
+

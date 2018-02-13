@@ -12,7 +12,7 @@ extends Control
 # button.connect("pressed", self, "wait_for_input", [ button, action ])
 
 # Constants
-const INPUT_ACTIONS = [ "ui_up", "ui_down", "ui_left", "ui_right", "jump", 'shield' ]
+const INPUT_ACTIONS = [ "ui_up", "ui_down", "ui_left", "ui_right", "jump", 'shield', 'attack', 'special', 'grab', 'cstick_up','cstick_down','cstick_left','cstick_right' ]
 const CONFIG_FILE = "res://input.cfg"
 
 # Member variables
@@ -31,7 +31,8 @@ func load_config():
 			var action_list = InputMap.get_action_list(action_name)
 			# There could be multiple actions in the list, but we save the first one by default
 			var new_event = InputEventKey.new()
-			new_event.scancode = action_list[0].scancode
+			if len(action_list) > 0:
+				new_event.scancode = action_list[0].scancode
 			config.set_value("input", action_name, new_event)
 		config.save(CONFIG_FILE)
 	else: # ConfigFile was properly loaded, initialize InputMap
@@ -117,20 +118,23 @@ func _ready():
 	# Initialise each button with the default key binding from InputMap
 	for action in INPUT_ACTIONS:
 		# We assume that the key binding that we want is the first one (0), if there are several
-		var input_event = InputMap.get_action_list(action)[0]
-		# See note at the beginning of the script
 		var button = get_node("bindings").get_node(action).get_node("Button")
-		if input_event is InputEventKey:
-				button.text = OS.get_scancode_string(input_event.scancode)
-		if input_event is InputEventJoypadButton:
-				button.text = str(input_event.button_index)
-		if input_event is InputEventJoypadMotion:
-				var symbol
-				if input_event.axis_value > 0:
-					symbol = '+'
-				else:
-					symbol ='-'
-				button.text = 'Axis '+str(input_event.axis)+':'+symbol
+		if len(InputMap.get_action_list(action)) > 0:
+			var input_event = InputMap.get_action_list(action)[0]
+			# See note at the beginning of the script
+			if input_event is InputEventKey:
+					button.text = OS.get_scancode_string(input_event.scancode)
+			if input_event is InputEventJoypadButton:
+					button.text = str(input_event.button_index)
+			if input_event is InputEventJoypadMotion:
+					var symbol
+					if input_event.axis_value > 0:
+						symbol = '+'
+					else:
+						symbol ='-'
+					button.text = 'Axis '+str(input_event.axis)+':'+symbol
+		else:
+			button.text =  'Empty'
 		button.connect("pressed", self, "wait_for_input", [action])
 	
 	# Do not start processing input until a button is pressed

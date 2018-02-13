@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scripts/Instancing_Test.gd" type="Script" id=1]
 
-[node name="PlayerInit" type="Node"]
+[node name="PlayerInit" type="Node" index="0"]
 
 script = ExtResource( 1 )
 

@@ -38,7 +38,7 @@ extents = Vector2( 10, 17.7477 )
 custom_solver_bias = 0.0
 extents = Vector2( 11.1762, 16.4908 )
 
-[node name="Player" type="KinematicBody2D" index="0"]
+[node name="Player" type="KinematicBody2D"]
 
 position = Vector2( 680, 340 )
 scale = Vector2( 1.59543, 1.59543 )
@@ -48,39 +48,19 @@ collision_mask = 6
 collision/safe_margin = 2.0
 script = ExtResource( 1 )
 _sections_unfolded = [ "Collision", "Transform" ]
-name = "ProtoChar"
-state = "air"
-velocity = Vector2( 0, 0 )
-facing = 0
-run_speed = 400
-dash_speed = 480
-max_air_speed = 250
-fall_speed = 40
-max_fall_speed = 900
-air_accel = 21
-traction = 20
-jump_speed = 400
-second_jump_speed = 800
-next_jump = 0
-max_air_jumps = 1
-jumps = 0
-fast_fall = false
-landing_frames = 4
-lag_frames = 0
-wall_jump_counter = 0
-decay_ratio = 1.05
-perfect_wavedash_modifier = 1.05
 
 [node name="Sprite_Node" type="AnimatedSprite" parent="." index="0"]
 
 scale = Vector2( 0.133809, 0.133809 )
 frames = ExtResource( 2 )
-animation = "run"
+animation = "uair"
+frame = 27
 playing = true
 _sections_unfolded = [ "Transform" ]
 
 [node name="stand_collision" type="CollisionShape2D" parent="." index="1"]
 
+visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
@@ -180,54 +160,95 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="dash_collision" type="CollisionShape2D" parent="." index="14"]
 
+visible = false
 position = Vector2( 0, 8.28174 )
 shape = SubResource( 7 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="skid_collision" type="CollisionShape2D" parent="." index="15"]
+[node name="nair_collision" type="CollisionShape2D" parent="." index="15"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="uair_collision" type="CollisionShape2D" parent="." index="16"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="bair_collision" type="CollisionShape2D" parent="." index="17"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="dair_collision" type="CollisionShape2D" parent="." index="18"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="fair_collision" type="CollisionShape2D" parent="." index="19"]
+
+visible = false
+position = Vector2( 0, 8.28174 )
+shape = SubResource( 7 )
+disabled = true
+_sections_unfolded = [ "Transform" ]
+
+[node name="skid_collision" type="CollisionShape2D" parent="." index="20"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="ledge_catch_collision" type="CollisionShape2D" parent="." index="16"]
+[node name="ledge_catch_collision" type="CollisionShape2D" parent="." index="21"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="ledge_hold_collision" type="CollisionShape2D" parent="." index="17"]
+[node name="ledge_hold_collision" type="CollisionShape2D" parent="." index="22"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="ledge_climb_fast_collision" type="CollisionShape2D" parent="." index="18"]
+[node name="ledge_climb_fast_collision" type="CollisionShape2D" parent="." index="23"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="ledge_roll_fast_collision" type="CollisionShape2D" parent="." index="19"]
+[node name="ledge_roll_fast_collision" type="CollisionShape2D" parent="." index="24"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="ledge_jump_fast_collision" type="CollisionShape2D" parent="." index="20"]
+[node name="ledge_jump_fast_collision" type="CollisionShape2D" parent="." index="25"]
 
 visible = false
 shape = SubResource( 1 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="wall_jump_left_collision" type="CollisionShape2D" parent="." index="21"]
+[node name="wall_jump_left_collision" type="CollisionShape2D" parent="." index="26"]
 
 visible = false
 position = Vector2( 0, -5.43831 )
@@ -235,7 +256,7 @@ shape = SubResource( 4 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="wall_jump_right_collision" type="CollisionShape2D" parent="." index="22"]
+[node name="wall_jump_right_collision" type="CollisionShape2D" parent="." index="27"]
 
 visible = false
 position = Vector2( 0, -5.43831 )
@@ -243,7 +264,7 @@ shape = SubResource( 4 )
 disabled = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="Type" type="Label" parent="." index="23"]
+[node name="Type" type="Label" parent="." index="28"]
 
 visible = false
 anchor_left = 0.0
@@ -261,7 +282,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Ground_RayL" type="RayCast2D" parent="." index="24"]
+[node name="Ground_RayL" type="RayCast2D" parent="." index="29"]
 
 position = Vector2( -10, 25 )
 enabled = true
@@ -273,7 +294,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Ground_RayR" type="RayCast2D" parent="." index="25"]
+[node name="Ground_RayR" type="RayCast2D" parent="." index="30"]
 
 position = Vector2( 10, 24.7528 )
 enabled = true
@@ -285,7 +306,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Wall_Jump_RayB" type="RayCast2D" parent="." index="26"]
+[node name="Wall_Jump_RayB" type="RayCast2D" parent="." index="31"]
 
 visible = false
 enabled = true
@@ -296,7 +317,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Wall_Jump_RayF" type="RayCast2D" parent="." index="27"]
+[node name="Wall_Jump_RayF" type="RayCast2D" parent="." index="32"]
 
 enabled = true
 exclude_parent = true
@@ -306,7 +327,7 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Ledge_Grab_RayF" type="RayCast2D" parent="." index="28"]
+[node name="Ledge_Grab_RayF" type="RayCast2D" parent="." index="33"]
 
 modulate = Color( 0.667969, 0, 0, 1 )
 position = Vector2( 0, -25.0118 )
